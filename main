@@ -1,476 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Kaizen Key Panel</title>
-
+<meta charset="UTF-8">
+<title>Zay’s Macro – License Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-:root{
-  --bg1:#020617;
-  --bg2:#0b1220;
-  --panel:#020617;
-  --border:#1e3a8a;
-  --accent:#2563eb;
-  --muted:#94a3b8;
-  --text:#e5e7eb;
-  --danger:#dc2626;
-  --ok:#22c55e;
+:root {
+  --bg: #0b1220;
+  --card: #111827;
+  --border: #1f2937;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #3b82f6;
+  --danger: #ef4444;
+  --success: #22c55e;
 }
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  padding:30px;
-  font-family:Segoe UI,system-ui,sans-serif;
-  background:radial-gradient(1200px 600px at 20% -10%, #0b1b3a 0%, transparent 60%),
-             radial-gradient(1200px 600px at 100% 0%, #020617 0%, transparent 55%),
-             linear-gradient(180deg,var(--bg2),var(--bg1));
-  color:var(--text);
+* { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+
+body {
+  background: radial-gradient(1200px circle at top, #111827, #020617);
+  color: var(--text);
+  margin: 0;
+  padding: 40px;
 }
 
-h1{
-  margin:0 0 20px;
-  font-size:26px;
-  font-weight:700;
+h1 { font-size: 28px; margin-bottom: 6px; }
+p { color: var(--muted); margin-top: 0; }
+
+.card {
+  background: rgba(17,24,39,.85);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
 }
 
-.card{
-  max-width:1200px;
-  margin:auto;
-  background:linear-gradient(180deg,#020617,#020617);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:22px;
-  box-shadow:0 0 0 1px rgba(37,99,235,.15), 0 30px 60px rgba(0,0,0,.5);
+input, button {
+  background: #020617;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:22px;
+button {
+  cursor: pointer;
+  transition: .15s;
 }
+button:hover { background: #020617cc; }
 
-label{
-  display:block;
-  font-size:13px;
-  color:var(--muted);
-  margin:12px 0 6px;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
-
-input{
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  background:#020617;
-  border:1px solid #1e40af;
-  color:var(--text);
-  outline:none;
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
 }
+th { color: var(--muted); font-weight: 500; }
 
-.row{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
+.badge {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
 }
+.active { background: #16a34a33; color: var(--success); }
+.revoked { background: #ef444433; color: var(--danger); }
 
-button{
-  width:100%;
-  padding:12px;
-  border-radius:14px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-  color:white;
-}
-
-.primary{background:var(--accent)}
-.secondary{background:#334155}
-.danger{background:var(--danger)}
-
-small{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:12px;
-}
-
-.full{
-  grid-column:1 / -1;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:24px;
-}
-
-th,td{
-  padding:14px 10px;
-  border-bottom:1px solid rgba(148,163,184,.15);
-  font-size:13px;
-  vertical-align:top;
-}
-
-th{
-  color:var(--muted);
-  text-align:left;
-}
-
-.key{
-  font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size:12px;
-  word-break:break-all;
-}
-
-.pill{
-  display:inline-block;
-  padding:3px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:600;
-}
-
-.ok{background:rgba(34,197,94,.15); color:var(--ok)}
-.rev{background:rgba(220,38,38,.15); color:#f87171}
-.used{background:rgba(59,130,246,.15); color:#60a5fa}
-
-.notice{
-  margin-top:10px;
-  font-size:12px;
-  color:var(--muted);
-}
-.err{
-  color:#f87171;
-  margin-top:10px;
-  font-size:12px;
-  white-space:pre-wrap;
-}
 </style>
 </head>
-
 <body>
 
-<h1>Kaizen Key Panel</h1>
+<h1>🧊 Zay’s Macro – License Panel</h1>
+<p>Offline licenses hosted on GitHub</p>
 
 <div class="card">
-  <div class="grid">
+  <h3>Generate License</h3>
+  <input id="seconds" type="number" placeholder="Seconds" style="width:120px">
+  <input id="hours" type="number" placeholder="Hours" style="width:120px">
+  <input id="days" type="number" placeholder="Days" style="width:120px">
+  <button onclick="generate()">Generate</button>
+</div>
 
-    <!-- LEFT -->
-    <div>
-      <label>Generate duration</label>
-      <div class="row">
-        <input id="days" type="number" min="0" value="0" placeholder="Days">
-        <input id="hours" type="number" min="0" value="1" placeholder="Hours">
-        <input id="minutes" type="number" min="0" value="0" placeholder="Minutes">
-        <input id="seconds" type="number" min="0" value="0" placeholder="Seconds">
-      </div>
-
-      <label>Note (optional)</label>
-      <input id="note" placeholder="Owner">
-
-      <div class="actions">
-        <button class="primary" onclick="generate()">Generate Key</button>
-        <button class="secondary" onclick="exportDb()">Export licenses.json</button>
-      </div>
-
-      <div class="notice">Offline-safe generator (works on file://). SECRET must match Python.</div>
-      <div id="err" class="err"></div>
-    </div>
-
-    <!-- RIGHT -->
-    <div>
-      <label>Selected key actions</label>
-
-      <label>Add / Subtract time (seconds)</label>
-      <input id="delta" type="number" value="3600">
-
-      <div class="actions">
-        <button class="secondary" onclick="applyDelta(1)">Add time</button>
-        <button class="secondary" onclick="applyDelta(-1)">Subtract time</button>
-      </div>
-
-      <div class="actions">
-        <button class="danger" onclick="revoke()">Revoke selected</button>
-        <button class="danger" onclick="remove()">Delete selected</button>
-      </div>
-
-      <button class="secondary full" onclick="clearAll()">Clear ALL (local)</button>
-
-      <small>
-        Revoke = key stays but is invalid<br>
-        Delete = removed from DB
-      </small>
-    </div>
-
-  </div>
-
-  <!-- TABLE -->
-  <table>
+<div class="card">
+  <h3>Licenses</h3>
+  <table id="table">
     <thead>
       <tr>
-        <th style="width:40px">Pick</th>
         <th>Key</th>
-        <th>Expiry</th>
+        <th>Expires</th>
         <th>Status</th>
-        <th>Note</th>
+        <th>Action</th>
       </tr>
     </thead>
-    <tbody id="rows"></tbody>
+    <tbody></tbody>
   </table>
-
 </div>
 
 <script>
-/* MUST MATCH kaizen_macro.py */
 const SECRET = "KAIZEN_LOCAL_SECRET_CHANGE_ME";
-const LS = "kaizen_keys_v2";
+let db = { keys: [] };
 
-// -------------------------
-// base64url helpers
-// -------------------------
-function b64urlFromBytes(bytes){
-  let bin = "";
-  for (let i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
-  return btoa(bin).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"");
+function b64url(b) {
+  return btoa(String.fromCharCode(...new Uint8Array(b)))
+    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
-function utf8Bytes(str){
-  return new TextEncoder().encode(str);
+async function hmac(msg) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw", enc.encode(SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(msg));
+  return b64url(sig);
 }
 
-// -------------------------
-// SHA-256 + HMAC-SHA256 (pure JS, offline-safe)
-// Based on a compact implementation of SHA-256.
-// -------------------------
-function rotr(n,x){ return (x>>>n) | (x<<(32-n)); }
-function ch(x,y,z){ return (x & y) ^ (~x & z); }
-function maj(x,y,z){ return (x & y) ^ (x & z) ^ (y & z); }
-function s0(x){ return rotr(2,x) ^ rotr(13,x) ^ rotr(22,x); }
-function s1(x){ return rotr(6,x) ^ rotr(11,x) ^ rotr(25,x); }
-function g0(x){ return rotr(7,x) ^ rotr(18,x) ^ (x>>>3); }
-function g1(x){ return rotr(17,x) ^ rotr(19,x) ^ (x>>>10); }
+async function generate() {
+  const now = Math.floor(Date.now() / 1000);
+  const exp =
+    now +
+    (+seconds.value || 0) +
+    (+hours.value || 0) * 3600 +
+    (+days.value || 0) * 86400;
 
-const K = new Uint32Array([
-  0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
-  0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
-  0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
-  0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
-  0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
-  0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
-  0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
-  0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
-]);
+  const payload = JSON.stringify({ tag: "KAIZEN", exp });
+  const p64 = b64url(new TextEncoder().encode(payload));
+  const sig = await hmac(payload);
+  const key = `${p64}.${sig}`;
 
-function sha256(msgBytes){
-  const l = msgBytes.length;
-  const bitLenHi = Math.floor((l * 8) / 2**32);
-  const bitLenLo = (l * 8) >>> 0;
+  db.keys.push({
+    key,
+    exp,
+    revoked: false,
+    hwid: null,
+    note: "Generated"
+  });
 
-  // pad
-  const withOne = l + 1;
-  const padLen = (withOne % 64 <= 56) ? (56 - (withOne % 64)) : (56 + 64 - (withOne % 64));
-  const total = l + 1 + padLen + 8;
-  const buf = new Uint8Array(total);
-  buf.set(msgBytes, 0);
-  buf[l] = 0x80;
-  // length big-endian
-  const dv = new DataView(buf.buffer);
-  dv.setUint32(total-8, bitLenHi, false);
-  dv.setUint32(total-4, bitLenLo, false);
-
-  // init hash
-  let a=0x6a09e667, b=0xbb67ae85, c=0x3c6ef372, d=0xa54ff53a;
-  let e=0x510e527f, f=0x9b05688c, g=0x1f83d9ab, h=0x5be0cd19;
-
-  const W = new Uint32Array(64);
-
-  for (let i=0;i<buf.length;i+=64){
-    // message schedule
-    for (let t=0;t<16;t++){
-      W[t] = dv.getUint32(i + t*4, false);
-    }
-    for (let t=16;t<64;t++){
-      W[t] = (g1(W[t-2]) + W[t-7] + g0(W[t-15]) + W[t-16]) >>> 0;
-    }
-
-    let A=a,B=b,C=c,D=d,E=e,F=f,G=g,H=h;
-
-    for (let t=0;t<64;t++){
-      const T1 = (H + s1(E) + ch(E,F,G) + K[t] + W[t]) >>> 0;
-      const T2 = (s0(A) + maj(A,B,C)) >>> 0;
-      H=G; G=F; F=E; E=(D + T1) >>> 0;
-      D=C; C=B; B=A; A=(T1 + T2) >>> 0;
-    }
-
-    a = (a + A) >>> 0;
-    b = (b + B) >>> 0;
-    c = (c + C) >>> 0;
-    d = (d + D) >>> 0;
-    e = (e + E) >>> 0;
-    f = (f + F) >>> 0;
-    g = (g + G) >>> 0;
-    h = (h + H) >>> 0;
-  }
-
-  const out = new Uint8Array(32);
-  const outDv = new DataView(out.buffer);
-  outDv.setUint32(0, a, false);
-  outDv.setUint32(4, b, false);
-  outDv.setUint32(8, c, false);
-  outDv.setUint32(12, d, false);
-  outDv.setUint32(16, e, false);
-  outDv.setUint32(20, f, false);
-  outDv.setUint32(24, g, false);
-  outDv.setUint32(28, h, false);
-  return out;
+  render();
 }
 
-function hmacSha256(keyBytes, msgBytes){
-  // block size 64
-  let k = keyBytes;
-  if (k.length > 64) k = sha256(k);
-  const o = new Uint8Array(64);
-  const i = new Uint8Array(64);
-  for (let n=0;n<64;n++){
-    const b = n < k.length ? k[n] : 0;
-    o[n] = b ^ 0x5c;
-    i[n] = b ^ 0x36;
-  }
-  const inner = sha256(concatBytes(i, msgBytes));
-  return sha256(concatBytes(o, inner));
+function render() {
+  const tbody = document.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  db.keys.forEach((k, i) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td style="font-family:monospace">${k.key}</td>
+      <td>${new Date(k.exp * 1000).toLocaleString()}</td>
+      <td>
+        <span class="badge ${k.revoked ? "revoked" : "active"}">
+          ${k.revoked ? "Revoked" : "Active"}
+        </span>
+      </td>
+      <td>
+        <button onclick="toggle(${i})">Toggle</button>
+        <button onclick="del(${i})">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  download();
 }
 
-function concatBytes(a,b){
-  const out = new Uint8Array(a.length + b.length);
-  out.set(a,0); out.set(b,a.length);
-  return out;
+function toggle(i) {
+  db.keys[i].revoked = !db.keys[i].revoked;
+  render();
 }
 
-// -------------------------
-// App logic
-// -------------------------
-function now(){ return Math.floor(Date.now()/1000); }
-
-function load(){
-  try{ return JSON.parse(localStorage.getItem(LS)) || {keys:[]} }
-  catch{ return {keys:[]} }
+function del(i) {
+  db.keys.splice(i, 1);
+  render();
 }
 
-function save(db){ localStorage.setItem(LS, JSON.stringify(db)); }
-
-function setErr(t){
-  document.getElementById("err").textContent = t || "";
-}
-
-function picked(){
-  return [...document.querySelectorAll('input[name="p"]:checked')].map(x=>x.value);
-}
-
-async function generate(){
-  try{
-    setErr("");
-    const d = +days.value||0;
-    const h = +hours.value||0;
-    const m = +minutes.value||0;
-    const s = +seconds.value||0;
-    const dur = d*86400 + h*3600 + m*60 + s;
-    if(dur<=0){ setErr("Duration must be > 0"); return; }
-
-    const payloadObj = { tag:"KAIZEN", exp: now()+dur };
-    const payloadJson = JSON.stringify(payloadObj);
-    const payloadBytes = utf8Bytes(payloadJson);
-
-    const p64 = b64urlFromBytes(payloadBytes);
-    const sigBytes = hmacSha256(utf8Bytes(SECRET), payloadBytes);
-    const sig64 = b64urlFromBytes(sigBytes);
-
-    const key = p64 + "." + sig64;
-
-    const db = load();
-    db.keys.unshift({
-      key, exp: payloadObj.exp,
-      revoked:false, used:false,
-      note: note.value || "",
-      hwid: null
-    });
-    save(db);
-    render();
-  }catch(e){
-    setErr("Generate error:\n" + (e && e.message ? e.message : String(e)));
-  }
-}
-
-function applyDelta(dir){
-  const sec = +delta.value||0;
-  if(sec<=0) return;
-  const db = load();
-  const sel = new Set(picked());
-  for(const k of db.keys){
-    if(sel.has(k.key)){
-      k.exp = Math.max(now()+1, k.exp + dir*sec);
-    }
-  }
-  save(db); render();
-}
-
-function revoke(){
-  const db = load();
-  const sel = new Set(picked());
-  for(const k of db.keys){
-    if(sel.has(k.key)) k.revoked = true;
-  }
-  save(db); render();
-}
-
-function remove(){
-  const db = load();
-  const sel = new Set(picked());
-  db.keys = db.keys.filter(k => !sel.has(k.key));
-  save(db); render();
-}
-
-function clearAll(){
-  if(confirm("Clear all local keys?")){
-    localStorage.removeItem(LS);
-    render();
-  }
-}
-
-function exportDb(){
-  const db = load();
-  const blob = new Blob([JSON.stringify({keys:db.keys},null,2)],{type:"application/json"});
+function download() {
+  const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = "licenses.json";
   a.click();
 }
-
-function render(){
-  const db = load();
-  rows.innerHTML="";
-  for(const k of db.keys){
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><input type="checkbox" name="p" value="${k.key}"></td>
-      <td class="key">${k.key}</td>
-      <td>${new Date(k.exp*1000).toISOString().replace("T"," ").slice(0,19)} UTC</td>
-      <td>
-        ${k.revoked?'<span class="pill rev">revoked</span>':
-          k.used?'<span class="pill used">used</span>':
-          '<span class="pill ok">ok</span>'}
-      </td>
-      <td>${k.note||""}</td>
-    `;
-    rows.appendChild(tr);
-  }
-}
-
-render();
 </script>
 
 </body>
