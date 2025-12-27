@@ -1,7 +1,9 @@
 {
-  "key": "specialkey",
-  "expires": 27686827479,
-  "revoked": false,
-  "hwid": null,
-  "note": "Generated via HTML"
+  "keys": [
+    {
+      "key": "ZAY-TEST",
+      "expires": 27686827881,
+      "revoked": false
+    }
+  ]
 }
