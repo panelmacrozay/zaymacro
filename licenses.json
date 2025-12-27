@@ -2,7 +2,7 @@
   "keys": [
     {
       "key": "zaytest",
-      "exp": 17788,
+      "exp": 1735689600,
       "revoked": false,
       "hwid": null,
       "note": "Generated"
