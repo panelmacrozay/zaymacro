@@ -1,11 +1,7 @@
 {
-  "keys": [
-    {
-      "key": "zaytester",
-      "expires": 1829899250,
-      "revoked": false,
-      "hwid": null,
-      "note": "Manual test key"
-    }
-  ]
+  "key": "specialkey",
+  "expires": 27686827479,
+  "revoked": false,
+  "hwid": null,
+  "note": "Generated via HTML"
 }
