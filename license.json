@@ -1,3 +1,10 @@
 {
-  "keys": []
+  "keys": [
+    {
+      "key": "ABC123",
+      "expires": 1735689600,
+      "hwid": null,
+      "revoked": false
+    }
+  ]
 }
