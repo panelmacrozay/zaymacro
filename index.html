@@ -1,189 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Zay’s Macro – License Panel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root {
-  --bg: #0b1220;
-  --card: #111827;
-  --border: #1f2937;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #3b82f6;
-  --danger: #ef4444;
-  --success: #22c55e;
-}
-
-* { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-
-body {
-  background: radial-gradient(1200px circle at top, #111827, #020617);
-  color: var(--text);
-  margin: 0;
-  padding: 40px;
-}
-
-h1 { font-size: 28px; margin-bottom: 6px; }
-p { color: var(--muted); margin-top: 0; }
-
-.card {
-  background: rgba(17,24,39,.85);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  margin-bottom: 20px;
-  backdrop-filter: blur(10px);
-}
-
-input, button {
-  background: #020617;
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px;
-}
-
-button {
-  cursor: pointer;
-  transition: .15s;
-}
-button:hover { background: #020617cc; }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th, td {
-  padding: 10px;
-  border-bottom: 1px solid var(--border);
-  text-align: left;
-}
-th { color: var(--muted); font-weight: 500; }
-
-.badge {
-  padding: 4px 8px;
-  border-radius: 999px;
-  font-size: 12px;
-}
-.active { background: #16a34a33; color: var(--success); }
-.revoked { background: #ef444433; color: var(--danger); }
-
-</style>
+  <meta charset="UTF-8">
+  <title>Zay Macro – License Generator</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: #e5e7eb;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: #020617;
+      padding: 30px;
+      border-radius: 14px;
+      width: 360px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.6);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button, textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+    }
+    input {
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    textarea {
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+      height: 120px;
+      resize: none;
+    }
+  </style>
 </head>
 <body>
 
-<h1>🧊 Zay’s Macro – License Panel</h1>
-<p>Offline licenses hosted on GitHub</p>
-
 <div class="card">
-  <h3>Generate License</h3>
-  <input id="seconds" type="number" placeholder="Seconds" style="width:120px">
-  <input id="hours" type="number" placeholder="Hours" style="width:120px">
-  <input id="days" type="number" placeholder="Days" style="width:120px">
+  <h1>License Generator</h1>
+
+  <label>Key Name</label>
+  <input id="keyName" placeholder="ZAY-30DAY-001">
+
+  <label>Duration (days)</label>
+  <input id="days" type="number" value="30">
+
   <button onclick="generate()">Generate</button>
-</div>
 
-<div class="card">
-  <h3>Licenses</h3>
-  <table id="table">
-    <thead>
-      <tr>
-        <th>Key</th>
-        <th>Expires</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <textarea id="output" readonly></textarea>
 </div>
 
 <script>
-const SECRET = "KAIZEN_LOCAL_SECRET_CHANGE_ME";
-let db = { keys: [] };
+function generate() {
+  const key = document.getElementById("keyName").value.trim();
+  const days = parseInt(document.getElementById("days").value);
 
-function b64url(b) {
-  return btoa(String.fromCharCode(...new Uint8Array(b)))
-    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
-}
+  if (!key || !days || days <= 0) {
+    alert("Enter a valid key and duration");
+    return;
+  }
 
-async function hmac(msg) {
-  const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw", enc.encode(SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(msg));
-  return b64url(sig);
-}
-
-async function generate() {
+  // CURRENT TIME IN SECONDS (CORRECT)
   const now = Math.floor(Date.now() / 1000);
-  const exp =
-    now +
-    (+seconds.value || 0) +
-    (+hours.value || 0) * 3600 +
-    (+days.value || 0) * 86400;
 
-  const payload = JSON.stringify({ tag: "KAIZEN", exp });
-  const p64 = b64url(new TextEncoder().encode(payload));
-  const sig = await hmac(payload);
-  const key = `${p64}.${sig}`;
+  // ADD DURATION
+  const expires = now + (days * 24 * 60 * 60);
 
-  db.keys.push({
-    key,
-    exp,
+  const json = {
+    key: key,
+    expires: expires,
     revoked: false,
     hwid: null,
-    note: "Generated"
-  });
+    note: "Generated via HTML"
+  };
 
-  render();
-}
-
-function render() {
-  const tbody = document.querySelector("tbody");
-  tbody.innerHTML = "";
-
-  db.keys.forEach((k, i) => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td style="font-family:monospace">${k.key}</td>
-      <td>${new Date(k.exp * 1000).toLocaleString()}</td>
-      <td>
-        <span class="badge ${k.revoked ? "revoked" : "active"}">
-          ${k.revoked ? "Revoked" : "Active"}
-        </span>
-      </td>
-      <td>
-        <button onclick="toggle(${i})">Toggle</button>
-        <button onclick="del(${i})">Delete</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  download();
-}
-
-function toggle(i) {
-  db.keys[i].revoked = !db.keys[i].revoked;
-  render();
-}
-
-function del(i) {
-  db.keys.splice(i, 1);
-  render();
-}
-
-function download() {
-  const blob = new Blob([JSON.stringify(db, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "licenses.json";
-  a.click();
+  document.getElementById("output").value =
+    JSON.stringify(json, null, 2);
 }
 </script>
 
