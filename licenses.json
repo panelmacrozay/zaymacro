@@ -1,8 +1,8 @@
 {
   "keys": [
     {
-      "key": "eyJ0YWciOiJLQUlaRU4iLCJleHAiOjE3NjY4Mjk4MDd9.BKebxkE-T45-6E84WRVNdkJYDAqTKrXTRG-z_d86v7k",
-      "exp": 1775386851,
+      "key": "zaytest",
+      "exp": 17788,
       "revoked": false,
       "hwid": null,
       "note": "Generated"
