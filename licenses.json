@@ -2,17 +2,10 @@
   "keys": [
     {
       "key": "zaytest",
-      "exp": 1735689600,
+      "expires": 1735689600,
       "revoked": false,
       "hwid": null,
-      "note": "Generated"
-    },
-    {
-      "key": "eyJ0YWciOiJLQUlaRU4iLCJleHAiOjE3NzUzODY4Njh9.nlYpF6W0rc73mTqwzJpaUa8kvOzd0hasWHLQDGfqTww",
-      "exp": 1775386868,
-      "revoked": false,
-      "hwid": null,
-      "note": "Generated"
+      "note": "Manual test key"
     }
   ]
 }
