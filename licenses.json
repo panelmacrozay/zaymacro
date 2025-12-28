@@ -1,9 +1,9 @@
 {
   "keys": [
     {
-      "key": "ZAYplease",
-      "expires": 27686827881,
-      "revoked": false
+      "key": "TEST-KEY-123",
+      "exp": 2793456000,
+      "hwid": null
     }
   ]
 }
