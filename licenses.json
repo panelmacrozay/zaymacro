@@ -1,14 +1,9 @@
 {
   "keys": [
-    { "key": "OWNERKEY", "exp": 2793456000, "hwid": null },
-    { "key": "MRMOKO123", "exp": 1769609003, "hwid": 466a50fc-28bb-4063-8720-c0cef23695c0 },
-    { "key": "ZAY-KEY-03", "exp": 2793456000, "hwid": null },
-    { "key": "ZAY-KEY-04", "exp": 2793456000, "hwid": null },
-    { "key": "ZAY-KEY05", "exp": 2793456000, "hwid": null },
-    { "key": "ZAY-KEY-06", "exp": 2793456000, "hwid": null },
-    { "key": "ZAYEY-07", "exp": 2793456000, "hwid": null },
-    { "key": "ZAYEY-008", "exp": 2793456000, "hwid": null },
-    { "key": "ZAYEY-009", "exp": 2793456000, "hwid": null },
-    { "key": "ZAEY-010", "exp": 2793456000, "hwid": null }
+    {
+      "key": "PASTE_HASH_HERE",
+      "exp": 1769609003,
+      "hwid": null
+    }
   ]
 }
